@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory/mocks.dart';
 import 'package:inventory/screens/counting_list/counting_list_screen.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CountingListScreen(),
+      home: CountingListScreen(countItems: countItemsMock,),
     );
   }
 }
