@@ -64,7 +64,7 @@ class _CountingListScreenState extends State<CountingListScreen> {
                   color: Colors.blue,
                   onPressed: () {
                     setState(() {
-                      items.add(CountItem(id: '6', name: 'name', value: 0));
+                      items.add(CountItem(id: 6, name: 'name', value: 0));
                     });
                   },
                   child: Icon(

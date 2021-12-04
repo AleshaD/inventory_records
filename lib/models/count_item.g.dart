@@ -7,13 +7,13 @@ part of 'count_item.dart';
 // **************************************************************************
 
 CountItem _$CountItemFromJson(Map<String, dynamic> json) => CountItem(
-      id: json['id'] as String,
+      id: json['id'] as int,
       name: json['name'] as String,
       value: json['value'] as int,
     );
 
 Map<String, dynamic> _$CountItemToJson(CountItem instance) => <String, dynamic>{
-      'id': instance.id,
       'name': instance.name,
+      'id': instance.id,
       'value': instance.value,
     };

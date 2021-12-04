@@ -4,8 +4,8 @@ part 'count_item.g.dart';
 
 @JsonSerializable()
 class CountItem {
-  final String id, name;
-  final int value;
+  final String name;
+  final int id, value;
 
   CountItem({required this.id, required this.name, required this.value});
 

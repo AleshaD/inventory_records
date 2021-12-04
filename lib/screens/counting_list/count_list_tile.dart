@@ -11,7 +11,7 @@ class CountListTile extends StatefulWidget {
 }
 
 class _CountListTileState extends State<CountListTile> {
-  late final String id;
+  late final int id;
   late String name;
   final TextEditingController nameTxtController = TextEditingController();
   final txtFieldDecoration = new InputDecoration(
