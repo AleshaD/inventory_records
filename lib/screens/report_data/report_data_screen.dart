@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:inventory/providers/storage_provider.dart';
 
 class ReportDataScreen extends StatefulWidget {
-  const ReportDataScreen({ Key? key }) : super(key: key);
+  final StorageProvider storage;
+  const ReportDataScreen(this.storage, { Key? key }) : super(key: key);
 
   @override
   _ReportDataScreenState createState() => _ReportDataScreenState();

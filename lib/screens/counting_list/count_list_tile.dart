@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:inventory/models/count_item.dart';
+import 'package:inventory/providers/storage_provider.dart';
 
 class CountListTile extends StatefulWidget {
-  const CountListTile(this.countItem, {Key? key}) : super(key: key);
+  final StorageProvider storage;
+  const CountListTile(this.countItem, this.storage, {Key? key}) : super(key: key);
 
   final CountItem countItem;
 
@@ -38,8 +40,15 @@ class _CountListTileState extends State<CountListTile> {
       int value = int.parse(valueTxtController.text);
       value += change;
       valueTxtController.value = TextEditingValue(text: value.toString());
+      widget.storage.updateCountItem(countItem);
     });
   }
+
+  CountItem get countItem => CountItem(
+        id: id,
+        name: nameTxtController.text,
+        value: int.parse(valueTxtController.text),
+      );
 
   @override
   Widget build(BuildContext context) {
