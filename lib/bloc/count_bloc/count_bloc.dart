@@ -24,6 +24,10 @@ class CountBloc extends Bloc<CountEvent, CountState> {
       emit(await _deleteItem(event.item));
     });
 
+    on<DeleteAllItemsEvent>((event, emit) async {
+      emit(await _delAllItems());
+    });
+
     this.add(CountBlocFetchItems());
   }
 
@@ -32,7 +36,7 @@ class CountBloc extends Bloc<CountEvent, CountState> {
   Future<CountState> _fetchItems() async {
     if (!storage.inited) await storage.init();
     var items = await storage.fetchCountItems();
-    return CountItemsFetchedState(items);
+    return CountItemsFetchedState(_sortedItems(items));
   }
 
   CountState _addItem(CountItem item) {
@@ -48,6 +52,22 @@ class CountBloc extends Bloc<CountEvent, CountState> {
   Future<CountState> _deleteItem(CountItem item) async {
     storage.deleteCountItem(item.id);
     var items = await storage.fetchCountItems();
-    return CountItemsFetchedState(items);
+    return CountItemsFetchedState(_sortedItems(items));
+  }
+
+  Future<CountState> _delAllItems() async {
+    var items = await storage.fetchCountItems();
+    for (var item in items) {
+      await storage.deleteCountItem(item.id);
+    }
+    return CountItemsFetchedState([]);
+  }
+
+  List<CountItem> _sortedItems(List<CountItem> items) {
+    items.sort((a, b) {
+      var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
+      return nameA.compareTo(nameB);
+    });
+    return items;
   }
 }

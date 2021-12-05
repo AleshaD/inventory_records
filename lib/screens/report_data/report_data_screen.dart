@@ -32,8 +32,10 @@ class _ReportDataScreenState extends State<ReportDataScreen> {
                 ),
               );
             }
-            return Center(
-              child: Text('click update'),
+            return Expanded(
+              child: Center(
+                child: Text('click update'),
+              ),
             );
           },
         ),
@@ -41,7 +43,12 @@ class _ReportDataScreenState extends State<ReportDataScreen> {
           onPressed: () => BlocProvider.of<CountBloc>(context).add(
             CountBlocFetchItems(),
           ),
-          child: Icon(Icons.refresh),
+          child: Container(
+            height: 40,
+            width: 160,
+            color: Colors.blue,
+            child: Icon(Icons.refresh, color: Colors.white,),
+          ),
         )
       ],
     );
