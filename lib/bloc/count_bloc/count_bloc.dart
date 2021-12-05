@@ -8,7 +8,7 @@ part 'count_state.dart';
 
 class CountBloc extends Bloc<CountEvent, CountState> {
   CountBloc(this.storage) : super(CountInitial([])) {
-    on<CountBlocDoInitialFetch>((event, emit) async {
+    on<CountBlocFetchItems>((event, emit) async {
       emit(await _fetchItems());
     });
 
@@ -24,29 +24,30 @@ class CountBloc extends Bloc<CountEvent, CountState> {
       emit(await _deleteItem(event.item));
     });
 
-    this.add(CountBlocDoInitialFetch());
+    this.add(CountBlocFetchItems());
   }
 
   final StorageProvider storage;
 
   Future<CountState> _fetchItems() async {
+    if (!storage.inited) await storage.init();
     var items = await storage.fetchCountItems();
-    return CountItemsUpdatedState(items);
+    return CountItemsFetchedState(items);
   }
 
   CountState _addItem(CountItem item) {
     storage.insertCountItem(item);
-    return CountItemChanged(item);
+    return CountItemChangedState(item);
   }
 
   CountState _editItem(CountItem item) {
     storage.updateCountItem(item);
-    return CountItemChanged(item);
+    return CountItemChangedState(item);
   }
 
   Future<CountState> _deleteItem(CountItem item) async {
     storage.deleteCountItem(item.id);
     var items = await storage.fetchCountItems();
-    return CountItemsUpdatedState(items);
+    return CountItemsFetchedState(items);
   }
 }

@@ -1,4 +1,4 @@
-import 'package:inventory/models/count_item.dart';
+import 'models/count_item.dart';
 
 List<CountItem> countItemsMock = [
   CountItem(

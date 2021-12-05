@@ -9,16 +9,16 @@ class CountInitial extends CountState {
   final List<CountItem> items;
 }
 
-class CountItemsUpdatedState extends CountState {
-  CountItemsUpdatedState(
+class CountItemsFetchedState extends CountState {
+  CountItemsFetchedState(
     List<CountItem> this.items,
   );
 
   final List<CountItem> items;
 }
 
-class CountItemChanged extends CountState {
-  CountItemChanged(this.item);
+class CountItemChangedState extends CountState {
+  CountItemChangedState(this.item);
 
   final CountItem item;
 }

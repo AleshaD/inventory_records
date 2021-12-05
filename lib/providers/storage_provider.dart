@@ -3,9 +3,13 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class StorageProvider {
+  final String countItemsDb = 'countItems';
+
   late Database _db;
   final int _dbVersion = 1;
-  final String countItemsDb = 'countItems';
+  bool _inited = false;
+
+  bool get inited => _inited;
 
   Future<bool> init() async {
     try {
@@ -20,6 +24,7 @@ class StorageProvider {
         version: _dbVersion,
       );
       _db = await database;
+      _inited = true;
       return true;
     } catch (e) {
       return false;

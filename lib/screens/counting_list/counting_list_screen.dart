@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inventory/bloc/count_bloc/count_bloc.dart';
 import 'package:inventory/models/count_item.dart';
-import 'package:inventory/providers/storage_provider.dart';
 import 'package:inventory/screens/counting_list/count_list_tile.dart';
 
 class CountingListScreen extends StatefulWidget {
-  final StorageProvider storage;
-  const CountingListScreen({Key? key, required this.countItems, required this.storage})
-      : super(key: key);
+  const CountingListScreen({
+    Key? key,
+    required this.countItems,
+  }) : super(key: key);
 
   final List<CountItem> countItems;
 
@@ -14,7 +16,8 @@ class CountingListScreen extends StatefulWidget {
   State<CountingListScreen> createState() => _CountingListScreenState();
 }
 
-class _CountingListScreenState extends State<CountingListScreen> with AutomaticKeepAliveClientMixin {
+class _CountingListScreenState extends State<CountingListScreen>
+    with AutomaticKeepAliveClientMixin {
   late List<CountItem> items;
 
   @override
@@ -26,6 +29,7 @@ class _CountingListScreenState extends State<CountingListScreen> with AutomaticK
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    CountBloc _countBloc = BlocProvider.of<CountBloc>(context);
     return Stack(children: [
       Container(
         padding: EdgeInsets.only(bottom: 50),
@@ -34,7 +38,7 @@ class _CountingListScreenState extends State<CountingListScreen> with AutomaticK
             for (var i = 0; i < items.length; i++)
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: CountListTile(items[i], widget.storage, key: ValueKey(items[i].id)),
+                child: CountListTile(items[i], key: ValueKey(items[i].id)),
               )
           ],
         ),
@@ -51,7 +55,7 @@ class _CountingListScreenState extends State<CountingListScreen> with AutomaticK
                 color: Colors.red,
                 onPressed: () {
                   for (var item in items) {
-                    widget.storage.deleteCountItem(item.id);
+                    _countBloc.add(CountDeleteItemEvent(item));
                   }
                   setState(() {
                     items = [];
@@ -71,9 +75,10 @@ class _CountingListScreenState extends State<CountingListScreen> with AutomaticK
                   color: Colors.blue,
                   onPressed: () {
                     setState(() {
-                      CountItem item = CountItem(id: DateTime.now().millisecondsSinceEpoch, name: 'name', value: 0);
+                      CountItem item = CountItem(
+                          id: DateTime.now().millisecondsSinceEpoch, name: 'name', value: 0);
                       items.add(item);
-                      widget.storage.insertCountItem(item);
+                      _countBloc.add(CountAddItemEvent(item));
                     });
                   },
                   child: Icon(

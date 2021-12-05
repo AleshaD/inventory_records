@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inventory/bloc/count_bloc/count_bloc.dart';
 import 'package:inventory/models/count_item.dart';
-import 'package:inventory/providers/storage_provider.dart';
 
 class CountListTile extends StatefulWidget {
-  final StorageProvider storage;
-  const CountListTile(this.countItem, this.storage, {Key? key}) : super(key: key);
+  const CountListTile(this.countItem,{Key? key}) : super(key: key);
 
   final CountItem countItem;
 
@@ -35,12 +35,12 @@ class _CountListTileState extends State<CountListTile> with AutomaticKeepAliveCl
     valueTxtController.value = TextEditingValue(text: widget.countItem.value.toString());
   }
 
-  void buttonPressed(int change) {
+  void buttonPressed(int change, CountBloc countBloc) {
     setState(() {
       int value = int.parse(valueTxtController.text);
       value += change;
       valueTxtController.value = TextEditingValue(text: value.toString());
-      widget.storage.updateCountItem(countItem);
+      countBloc.add(CountEditItemEvent(countItem));
     });
   }
 
@@ -53,6 +53,7 @@ class _CountListTileState extends State<CountListTile> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    CountBloc _countBloc = BlocProvider.of<CountBloc>(context);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -101,7 +102,7 @@ class _CountListTileState extends State<CountListTile> with AutomaticKeepAliveCl
                 child: MaterialButton(
                   color: Colors.red.shade300,
                   onPressed: () {
-                    buttonPressed(-1);
+                    buttonPressed(-1, _countBloc);
                   },
                   child: Text('-'),
                 ),
@@ -114,7 +115,7 @@ class _CountListTileState extends State<CountListTile> with AutomaticKeepAliveCl
                 child: MaterialButton(
                   color: Colors.green,
                   onPressed: () {
-                    buttonPressed(1);
+                    buttonPressed(1, _countBloc);
                   },
                   child: Text('+'),
                 ),

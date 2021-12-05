@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inventory/mocks.dart';
-import 'package:inventory/models/count_item.dart';
 import 'package:inventory/providers/storage_provider.dart';
 import 'package:inventory/screens/counting_list/counting_list_screen.dart';
 import 'package:inventory/screens/report_data/report_data_screen.dart';
@@ -32,31 +30,14 @@ class HomeScreen extends StatelessWidget {
             ]),
           ),
         ),
-        body: FutureBuilder(
-            future: storage.init(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return FutureBuilder(
-                    future: storage.fetchCountItems(),
-                    builder: (context, AsyncSnapshot<List<CountItem>> snapshot) {
-                      if (snapshot.hasData) {
-                        return TabBarView(
+          body: TabBarView(
                           children: [
                             CountingListScreen(
-                              countItems: snapshot.data!,
-                              storage: storage,
+                countItems: [],
                             ),
-                            ReportDataScreen(storage),
+              ReportDataScreen(),
                           ],
-                        );
-                      } else
-                        return Container();
-                    });
-              } else {
-                return Container();
-              }
-            }),
-      ),
+          )),
     );
   }
 }

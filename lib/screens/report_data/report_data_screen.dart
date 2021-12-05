@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inventory/bloc/count_bloc/count_bloc.dart';
 import 'package:inventory/models/count_item.dart';
-import 'package:inventory/providers/storage_provider.dart';
 
 class ReportDataScreen extends StatefulWidget {
-  final StorageProvider storage;
-  const ReportDataScreen(this.storage, {Key? key}) : super(key: key);
+  const ReportDataScreen({Key? key}) : super(key: key);
 
   @override
   _ReportDataScreenState createState() => _ReportDataScreenState();
@@ -15,23 +15,35 @@ class _ReportDataScreenState extends State<ReportDataScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: widget.storage.fetchCountItems(),
-      builder: (context, AsyncSnapshot<List<CountItem>> snapshot) {
-        if (snapshot.hasData) {
-          txtController.value = TextEditingValue(text: getMdTable(snapshot.data!));
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              minLines: 1,
-              maxLines: snapshot.data!.length + 4,
-              controller: txtController,
-            ),
-          );
-        } else {
-          return Container();
-        }
-      },
+    return Column(
+      children: [
+        BlocBuilder<CountBloc, CountState>(
+          builder: (context, state) {
+            if (state is CountItemsFetchedState) {
+              txtController.value = TextEditingValue(text: getMdTable(state.items));
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                    minLines: 1,
+                    maxLines: state.items.length + 4,
+                    controller: txtController,
+                  ),
+                ),
+              );
+            }
+            return Center(
+              child: Text('click update'),
+            );
+          },
+        ),
+        MaterialButton(
+          onPressed: () => BlocProvider.of<CountBloc>(context).add(
+            CountBlocFetchItems(),
+          ),
+          child: Icon(Icons.refresh),
+        )
+      ],
     );
   }
 
@@ -43,7 +55,7 @@ class _ReportDataScreenState extends State<ReportDataScreen> {
       total += item.value;
       table = '$table\n${item.name} | ${item.value}';
     }
-      table = '$table\nвсего | $total';
+    table = '$table\nвсего | $total';
     return table;
   }
 }
