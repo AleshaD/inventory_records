@@ -36,11 +36,14 @@ class _ReportDataScreenState extends State<ReportDataScreen> {
   }
 
   String getMdTable(List<CountItem> items) {
-    String table = 'name | count';
+    String table = 'имя | количество';
     table = '$table\n:--- | ---:';
+    int total = 0;
     for (var item in items) {
+      total += item.value;
       table = '$table\n${item.name} | ${item.value}';
     }
+      table = '$table\nвсего | $total';
     return table;
   }
 }

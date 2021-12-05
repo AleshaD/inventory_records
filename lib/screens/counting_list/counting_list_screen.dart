@@ -34,7 +34,7 @@ class _CountingListScreenState extends State<CountingListScreen> with AutomaticK
             for (var i = 0; i < items.length; i++)
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: CountListTile(items[i], widget.storage),
+                child: CountListTile(items[i], widget.storage, key: ValueKey(items[i].id)),
               )
           ],
         ),
@@ -71,7 +71,7 @@ class _CountingListScreenState extends State<CountingListScreen> with AutomaticK
                   color: Colors.blue,
                   onPressed: () {
                     setState(() {
-                      CountItem item = CountItem(id: DateTime.now().millisecond, name: 'name', value: 0);
+                      CountItem item = CountItem(id: DateTime.now().millisecondsSinceEpoch, name: 'name', value: 0);
                       items.add(item);
                       widget.storage.insertCountItem(item);
                     });

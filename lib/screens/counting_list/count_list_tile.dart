@@ -12,7 +12,7 @@ class CountListTile extends StatefulWidget {
   _CountListTileState createState() => _CountListTileState();
 }
 
-class _CountListTileState extends State<CountListTile> {
+class _CountListTileState extends State<CountListTile> with AutomaticKeepAliveClientMixin {
   late final int id;
   late String name;
   final TextEditingController nameTxtController = TextEditingController();
@@ -52,6 +52,7 @@ class _CountListTileState extends State<CountListTile> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -124,4 +125,7 @@ class _CountListTileState extends State<CountListTile> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
