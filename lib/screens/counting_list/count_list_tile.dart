@@ -55,7 +55,7 @@ class _CountListTileState extends State<CountListTile> with AutomaticKeepAliveCl
     super.build(context);
     CountBloc _countBloc = BlocProvider.of<CountBloc>(context);
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
           color: Colors.blue.shade50,
           borderRadius: BorderRadius.all(
@@ -94,7 +94,7 @@ class _CountListTileState extends State<CountListTile> with AutomaticKeepAliveCl
             ],
           ),
           SizedBox(
-            height: 16,
+            height: 8,
           ),
           Row(
             children: [
