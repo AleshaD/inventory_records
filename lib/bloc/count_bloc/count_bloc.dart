@@ -12,12 +12,16 @@ class CountBloc extends Bloc<CountEvent, CountState> {
       emit(await _fetchItems());
     });
 
-    on<CountAddItemEvent>((event, emit) {
-      emit(_addItem(event.item));
+    on<CountAddItemEvent>((event, emit) async {
+      emit(await _addItem(event.item));
     });
 
     on<CountEditItemEvent>((event, emit) {
       emit(_editItem(event.item));
+    });
+
+    on<CountFetchedBySort>((event, emit) async {
+        emit(await _fetchWithSort(event.sortBy));
     });
 
     on<CountDeleteItemEvent>((event, emit) async {
@@ -39,9 +43,10 @@ class CountBloc extends Bloc<CountEvent, CountState> {
     return CountItemsFetchedState(_sortedItems(items));
   }
 
-  CountState _addItem(CountItem item) {
+  Future<CountState> _addItem(CountItem item) async {
     storage.insertCountItem(item);
-    return CountItemChangedState(item);
+    var items = await storage.fetchCountItems();
+    return CountItemsFetchedState(_sortedItems(items));
   }
 
   CountState _editItem(CountItem item) {
@@ -69,5 +74,14 @@ class CountBloc extends Bloc<CountEvent, CountState> {
       return nameA.compareTo(nameB);
     });
     return items;
+  }
+
+  Future<CountState> _fetchWithSort(String sortBy) async {
+    var items = await storage.fetchCountItems();
+    List<CountItem> sortedItems = [];
+    for (var item in items) {
+      if (item.name.toLowerCase().startsWith(sortBy.toLowerCase())) sortedItems.add(item);
+    }
+    return CountItemsFetchedState(sortedItems);
   }
 }

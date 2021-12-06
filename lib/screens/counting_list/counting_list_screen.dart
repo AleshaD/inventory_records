@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory/bloc/count_bloc/count_bloc.dart';
 import 'package:inventory/models/count_item.dart';
+import 'package:inventory/screens/counting_list/bottom_controls_btns.dart';
 import 'package:inventory/screens/counting_list/count_list_tile.dart';
 
 class CountingListScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _CountingListScreenState extends State<CountingListScreen>
       },
       child: Stack(children: [
         Container(
-          padding: EdgeInsets.only(bottom: 50),
+          padding: EdgeInsets.only(bottom: 60),
           child: ListView(
             children: [
               for (var i = 0; i < items.length; i++)
@@ -55,45 +56,8 @@ class _CountingListScreenState extends State<CountingListScreen>
           alignment: Alignment.bottomCenter,
           child: Container(
             width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                MaterialButton(
-                  height: 45,
-                  color: Colors.red,
-                  onPressed: () {
-                    _countBloc.add(CountBlocFetchItems());
-                  },
-                  child: Text(
-                    'sort',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                Expanded(
-                  child: MaterialButton(
-                    height: 45,
-                    color: Colors.blue,
-                    onPressed: () {
-                      setState(() {
-                        CountItem item = CountItem(
-                            id: DateTime.now().millisecondsSinceEpoch, name: 'name', value: 0);
-                        items.add(item);
-                        _countBloc.add(CountAddItemEvent(item));
-                      });
-                    },
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            height: 60,
+            child: BottomControlsBtns(_countBloc),
           ),
         ),
       ]),

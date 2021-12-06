@@ -6,18 +6,27 @@ abstract class CountEvent {}
 class CountBlocFetchItems extends CountEvent {}
 
 class CountAddItemEvent extends CountEvent {
-  final CountItem item;
   CountAddItemEvent(this.item);
+
+  final CountItem item;
 }
 
 class CountEditItemEvent extends CountEvent {
-  final CountItem item;
   CountEditItemEvent(this.item);
+
+  final CountItem item;
+}
+
+class CountFetchedBySort extends CountEvent {
+  CountFetchedBySort(this.sortBy);
+
+  final String sortBy;
 }
 
 class CountDeleteItemEvent extends CountEvent {
-  final CountItem item;
   CountDeleteItemEvent(this.item);
+
+  final CountItem item;
 }
 
 class DeleteAllItemsEvent extends CountEvent {}
